@@ -6,10 +6,17 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import br.com.mtonon.myfinance.domain.enums.StatusLancamento;
+import br.com.mtonon.myfinance.domain.enums.TipoLancamento;
 
 @Entity
 @Table(name = "usuario", schema = "finance")
@@ -33,17 +40,26 @@ public class Lancamento implements Serializable{
 	@Column(name = "valor")
 	private Double valor;
 	
-	@Column(name = "id_usuario")
+	@ManyToOne /* Relação Muitos Lançamentos para Um Usuário */
+	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 	
 	@Column(name = "data_cadastro")
 	private LocalDate dataCadastro;
 	
+	@Enumerated(value = EnumType.STRING)
+	@Column(name = "tipo")
+	private TipoLancamento tipo;
+	
+	@Enumerated(value = EnumType.STRING)
+	@Column(name = "status")
+	private StatusLancamento status;
+	
 	public Lancamento() {
 	}
 
 	public Lancamento(Long id, String descricao, Integer mes, Integer ano, Double valor, Usuario usuario,
-			LocalDate dataCadastro) {
+			LocalDate dataCadastro, TipoLancamento tipo, StatusLancamento status) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -52,6 +68,8 @@ public class Lancamento implements Serializable{
 		this.valor = valor;
 		this.usuario = usuario;
 		this.dataCadastro = dataCadastro;
+		this.tipo = tipo;
+		this.status = status;
 	}
 
 	public Long getId() {
@@ -108,6 +126,22 @@ public class Lancamento implements Serializable{
 
 	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+	
+	public TipoLancamento getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoLancamento tipo) {
+		this.tipo = tipo;
+	}
+
+	public StatusLancamento getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusLancamento status) {
+		this.status = status;
 	}
 
 	@Override
