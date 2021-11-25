@@ -8,4 +8,6 @@ import br.com.mtonon.myfinance.domain.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
+	boolean existsByEmail(String email);
+
 }
